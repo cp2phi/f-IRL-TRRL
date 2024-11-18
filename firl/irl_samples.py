@@ -23,10 +23,13 @@ from utils.plots.train_plot import plot_disc as visual_disc
 import datetime
 import dateutil.tz
 import json, copy
+import torch.utils.tensorboard as tb
 
 def try_evaluate(itr: int, policy_type: str, sac_info):
     assert policy_type in ["Running"]
+    # 1
     update_time = itr * v['reward']['gradient_step']
+    # 5000
     env_steps = itr * v['sac']['epochs'] * v['env']['T']
     agent_emp_states = samples[0].copy()
     assert agent_emp_states.shape[0] == v['irl']['training_trajs']
@@ -62,7 +65,7 @@ def try_evaluate(itr: int, policy_type: str, sac_info):
     logger.record_tabular(f"{policy_type} Update Time", update_time)
     logger.record_tabular(f"{policy_type} Env Steps", env_steps)
 
-    return real_return_det, real_return_sto
+    return real_return_det, real_return_sto,metrics
 
 if __name__ == "__main__":
     yaml = YAML()
@@ -102,6 +105,7 @@ if __name__ == "__main__":
     print('pid', pid)
     os.makedirs(os.path.join(log_folder, 'plt'))
     os.makedirs(os.path.join(log_folder, 'model'))
+    os.makedirs(os.path.join(log_folder, env_name + "_" + v['obj']))
 
     # environment
     env_fn = lambda: gym.make(env_name)
@@ -115,6 +119,7 @@ if __name__ == "__main__":
     expert_trajs = torch.load(f'expert_data/states/{env_name}.pt').numpy()[:, :, state_indices]
     expert_trajs = expert_trajs[:num_expert_trajs, :, :] # select first expert_episodes
     expert_samples = expert_trajs.copy().reshape(-1, len(state_indices))
+    # (16, 1000, 111) (16000, 111)
     print(expert_trajs.shape, expert_samples.shape) # ignored starting state
 
     # Initilialize reward as a neural network
@@ -129,6 +134,11 @@ if __name__ == "__main__":
         disc = Disc(len(state_indices), **v['disc'], device=device)
 
     max_real_return_det, max_real_return_sto = -np.inf, -np.inf
+
+    global writer
+    writer = tb.SummaryWriter(log_folder + '/' + env_name + "_" + v['obj'], flush_secs=1)
+
+    #600
     for itr in range(v['irl']['n_itrs']):
 
         if v['sac']['reinitialize'] or itr == 0:
@@ -172,6 +182,7 @@ if __name__ == "__main__":
 
         # optimization w.r.t. reward
         reward_losses = []
+        # 1
         for _ in range(v['reward']['gradient_step']):
             if v['irl']['resample_episodes'] > v['irl']['expert_episodes']:
                 expert_res_indices = np.random.choice(expert_trajs.shape[0], v['irl']['resample_episodes'], replace=True)
@@ -198,7 +209,7 @@ if __name__ == "__main__":
             reward_optimizer.step()
 
         # evaluating the learned reward
-        real_return_det, real_return_sto = try_evaluate(itr, "Running", sac_info)
+        real_return_det, real_return_sto,metrics = try_evaluate(itr, "Running", sac_info)
         if real_return_det > max_real_return_det and real_return_sto > max_real_return_sto:
             max_real_return_det, max_real_return_sto = real_return_det, real_return_sto
             torch.save(reward_func.state_dict(), os.path.join(logger.get_dir(), 
@@ -208,8 +219,14 @@ if __name__ == "__main__":
         logger.record_tabular("Reward Loss", loss.item())
         if v['sac']['automatic_alpha_tuning']:
             logger.record_tabular("alpha", sac_agent.alpha.item())
-        
+
+        writer.add_scalar( env_name + "/distance", metrics['fkl'], itr)
+        writer.add_scalar( env_name + "/reward", real_return_det, itr)
+        writer.add_scalar( env_name + "/loss", loss, itr)
+
         # if v['irl']['save_interval'] > 0 and (itr % v['irl']['save_interval'] == 0 or itr == v['irl']['n_itrs']-1):
         #     torch.save(reward_func.state_dict(), os.path.join(logger.get_dir(), f"model/reward_model_{itr}.pkl"))
 
         logger.dump_tabular()
+
+    writer.close()

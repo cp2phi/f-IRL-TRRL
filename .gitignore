@@ -8,7 +8,7 @@ build/
 *.ipynb
 
 .vscode/
-
+.idea/
 # logs, a soft link to disk
 logs/
 

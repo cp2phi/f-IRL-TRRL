@@ -1,4 +1,4 @@
-obj: f-max-rkl
+obj: js
 IS: false
 seed: 23
 cuda: -1

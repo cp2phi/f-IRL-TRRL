@@ -14,17 +14,17 @@ def expert_density(task_name, env, goal=None, goal_radius=None, **kwargs):
     # below are robust uniform distributions for any state
     def expert_uniform(state):
         area = env.size_x * env.size_y
-        return np.ones((state.shape[0]), dtype=np.float)/area
+        return np.ones((state.shape[0]), dtype=float)/area
 
     def expert_uniform_reacher(state):
         area = math.pi * env.radius**2
-        return np.ones((state.shape[0]), dtype=np.float)/area
+        return np.ones((state.shape[0]), dtype=float)/area
 
     def expert_uniform_sawyer(state):
         x_low, y_low = env.puck_goal_low[0], env.puck_goal_low[1]
         x_high, y_high = env.puck_goal_high[0], env.puck_goal_high[1]
         area = (x_high - x_low) * (y_high - y_low)
-        return np.ones((state.shape[0]), dtype=np.float) / area
+        return np.ones((state.shape[0]), dtype=float) / area
 
     # def expert_goal(state):
     #     r = goal_radius
@@ -35,7 +35,7 @@ def expert_density(task_name, env, goal=None, goal_radius=None, **kwargs):
         # a circle
         area = math.pi * goal_radius**2
         inside = np.linalg.norm(state - goal, axis=1) <= goal_radius
-        return inside.astype(np.float) / area + (1-inside).astype(np.float) * eps
+        return inside.astype(float) / area + (1-inside).astype(float) * eps
     
     # def expert_multigoal(state):
     #     all_size = np.sum([(2*r) ** 2 for r in goal_radius])

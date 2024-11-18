@@ -91,7 +91,6 @@ class SMMIRLDisc(nn.Module):
         ).to(device)
         self.batch_size = batch_size
 
-
     def log_density_ratio(self, states):
         states = torch.FloatTensor(states).to(self.device)
         self.eval()

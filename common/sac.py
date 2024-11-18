@@ -399,7 +399,7 @@ class SAC:
         total_steps = self.steps_per_epoch * self.epochs
         start_time = time.time()
 
-        o, ep_len = self.env.reset(n_parallel), np.ones(n_parallel).astype(np.int)
+        o, ep_len = self.env.reset(n_parallel), np.ones(n_parallel).astype(int)
         # o, ep_ret, ep_len = self.env.reset(), 0, 0
 
         print(f"Training SAC for IRL agent: Total steps {total_steps:d}")
@@ -453,7 +453,7 @@ class SAC:
             # End of trajectory handling
             # implictly assume all trajectories are synchronized
             if d or np.any(ep_len == self.max_ep_len):
-                o, ep_len = self.env.reset(n_parallel), np.ones(n_parallel).astype(np.int)
+                o, ep_len = self.env.reset(n_parallel), np.ones(n_parallel).astype(int)
 
             # Update handling
             log_pi = 0
@@ -500,7 +500,6 @@ class SAC:
         alphas = []
         log_pis = []
         test_time_steps = []
-
         
         for t in range(total_steps):
             
@@ -511,7 +510,6 @@ class SAC:
                 a = self.get_action(o)
             else:
                 a = self.env.action_space.sample()
-
 
             # Step the env
             o2, r, d, _ = self.env.step(a)

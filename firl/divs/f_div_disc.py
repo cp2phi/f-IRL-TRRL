@@ -5,6 +5,7 @@ import torch.nn.functional as F
 def f_div_disc_loss(div: str, IS: bool, samples, disc, reward_func, device, expert_trajs=None):
     # please add eps to expert density, not here
     assert div in ['fkl', 'rkl', 'js']
+    # state，action，log
     s, _, log_a = samples
     if expert_trajs is not None:
         assert expert_trajs.ndim == 3 and expert_trajs.shape[1:] == s.shape[1:]

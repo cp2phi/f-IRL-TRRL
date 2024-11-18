@@ -63,7 +63,8 @@ def try_evaluate(itr: int, policy_type: str, sac_info, old_reward=None):
 if __name__ == "__main__":
     yaml = YAML()
     v = yaml.load(open(sys.argv[1]))
-
+    #yaml_path = "../configs/density/reacher_trace_gauss.yml"
+    #v = yaml.load(open(yaml_path))
     # common parameters
     env_name, task_name = v['env']['env_name'], v['task']['task_name']
     add_time, state_indices = v['env']['add_time'], v['env']['state_indices']
