@@ -1,0 +1,58 @@
+2024-12-03 18:23:37.336836: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-12-03 18:23:37.353587: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1733203417.375188 1605033 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1733203417.381692 1605033 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-12-03 18:23:37.402212: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+phi True
+phi cuda:5
+Logging to logs/HalfCheetahFH-v0/exp-16/rkl/2024_12_03_18_23_39
+/home/pche321/Code/f-IRL-TRRL/firl/irl_samples.py:122: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  expert_trajs = torch.load(f'expert_data/states/{env_name}.pt').numpy()[:, :, state_indices]
+Logging to directory: logs/HalfCheetahFH-v0/exp-16/rkl/2024_12_03_18_23_39
+pid 1605033
+(16, 1000, 17) (16000, 17)
+Reinitializing sac
+Training SAC for IRL agent: Total steps 5000
+SAC Training | Evaluation: 97.789 Timestep: 1 Elapsed 29s
+SAC Training End: time 126s
+collect trajs 31s
+train disc 6s
+rkl loss: 2030.7138671875
+*****************************************
+env_steps: 0: Running fkl: 31.329 rkl: 10.846 time: 3s
+*****************************************
+real det return avg: -29.64
+real sto return avg: -176.05
+-2024-12-03 18:28:31.276145 NZDT--
+| Itration            | 0        |
+| Real Det Return     | -29.6    |
+| Real Sto Return     | -176     |
+| Reward Loss         | 2.03e+03 |
+| Running Env Steps   | 0        |
+| Running Forward KL  | 31.3     |
+| Running Reverse KL  | 10.8     |
+| Running Update Time | 0        |
+----------------------------------
+Training SAC for IRL agent: Total steps 5000
+SAC Training | Evaluation: 114.568 Timestep: 1 Elapsed 31s
+SAC Training End: time 153s
+collect trajs 31s
+train disc 6s
+rkl loss: 2409.17236328125
+*****************************************
+env_steps: 5000: Running fkl: 31.713 rkl: 11.322 time: 3s
+*****************************************
+real det return avg: -24.36
+real sto return avg: -129.86
+-2024-12-03 18:33:47.204462 NZDT--
+| Itration            | 1        |
+| Real Det Return     | -24.4    |
+| Real Sto Return     | -130     |
+| Reward Loss         | 2.41e+03 |
+| Running Env Steps   | 5000     |
+| Running Forward KL  | 31.7     |
+| Running Reverse KL  | 11.3     |
+| Running Update Time | 1        |
+----------------------------------

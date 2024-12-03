@@ -1,7 +1,7 @@
-obj: js
+obj: rkl
 IS: false
 seed: 1
-cuda: -1
+cuda: 2
 env:
   env_name: AntFH-v0
   T: 1000

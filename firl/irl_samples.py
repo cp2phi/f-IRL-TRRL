@@ -78,7 +78,10 @@ if __name__ == "__main__":
     num_expert_trajs = v['irl']['expert_episodes']
 
     # system: device, threads, seed, pid
+    print("phi",torch.cuda.is_available())
     device = torch.device(f"cuda:{v['cuda']}" if torch.cuda.is_available() and v['cuda'] >= 0 else "cpu")
+    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print("phi",device)
     torch.set_num_threads(1)
     np.set_printoptions(precision=3, suppress=True)
     system.reproduce(seed)
