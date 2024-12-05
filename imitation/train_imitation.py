@@ -1,5 +1,5 @@
 
-import gymnasium as gym
+import gym
 import numpy as np
 import torch
 from stable_baselines3 import PPO
@@ -31,16 +31,16 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
     """
     根据指定的算法训练模型。
     """
-    if env_name=="Ant-v2":
+    if env_name=="Ant-v1":
         expert_policy = "seals-Ant-v1"
         expert_data ="HumanCompatibleAI/ppo-seals-Ant-v1"
-    elif env_name == "HalfCheetah-v2":
+    elif env_name == "HalfCheetah-v1":
         expert_policy = "seals-HalfCheetah-v1"
         expert_data = "HumanCompatibleAI/ppo-seals-HalfCheetah-v1"
-    elif env_name == "Hopper-v2":
+    elif env_name == "Hopper-v1":
         expert_policy= "seals-Hopper-v1"
         expert_data ="HumanCompatibleAI/ppo-seals-Hopper-v1"
-    elif env_name == "Walker2d-v2":
+    elif env_name == "Walker2d-v1":
         expert_policy = "seals-Walker2d-v1"
         expert_data = "HumanCompatibleAI/ppo-seals-Walker2d-v1"
     else:
