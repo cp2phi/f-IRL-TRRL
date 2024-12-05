@@ -1,9 +1,9 @@
-obj: js
+obj: GAIL
 IS: false
-seed: 23
+seed: 1
 cuda: -1
 env:
-  env_name: HopperFH-v0
+  env_name: Ant-v1
   T: 1000
   state_indices: all
 irl:
@@ -11,13 +11,13 @@ irl:
   n_itrs: 300
   save_interval: 0
   eval_episodes: 20
-  expert_episodes: 4
+  expert_episodes: 16
   resample_episodes: 10
 bc:
   epochs: 10000
   eval_freq: 100
   eval_episodes: 20
-  expert_episodes: 16
+  expert_episodes: 20
 sac:
   k: 1
   epochs: 5
@@ -26,26 +26,27 @@ sac:
   random_explore_episodes: 1
   update_num: 1
   batch_size: 100
-  lr: 1e-3
+  lr: 0.001
   alpha: 0.2
   automatic_alpha_tuning: false
   buffer_size: 1000000
   num_test_episodes: 10
   reinitialize: false
+
 reward:
   use_bn: false
   residual: false
   hid_act: relu
-  hidden_sizes: [64, 64]
+  hidden_sizes: [128, 128]
   clamp_magnitude: 10
-  lr: 1e-4
+  lr: 0.0001
   weight_decay: 1e-3
   gradient_step: 1
   momentum: 0.9
 disc:
   reinit: false
   model_type: resnet_disc
-  num_layer_blocks: 3
+  num_layer_blocks: 6
   hid_dim: 128
   hid_act: tanh
   use_bn: false

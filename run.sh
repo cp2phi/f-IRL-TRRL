@@ -30,4 +30,6 @@ export PYTHONPATH=${PWD}:$PYTHONPATH
 #python firl/irl_samples.py configs/samples/agents/hopper.yml
 #python firl/irl_samples.py configs/samples/agents/walker2d.yml
 
+# GAIL
+python imitation/train_imitation.py configs/samples/agents/ant_GAIL.yml
 
