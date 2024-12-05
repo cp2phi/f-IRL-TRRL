@@ -1,5 +1,7 @@
+import os
+import tempfile
 
-import gym
+import gymnasium as gym
 import numpy as np
 import torch
 from stable_baselines3 import PPO
@@ -23,7 +25,6 @@ from imitation.rewards.reward_nets import BasicRewardNet
 from imitation.util.networks import RunningNorm
 from imitation.util.util import make_vec_env
 from stable_baselines3.common.evaluation import evaluate_policy
-import tempfile
 from imitation.algorithms.dagger import SimpleDAggerTrainer
 
 
@@ -31,20 +32,8 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
     """
     根据指定的算法训练模型。
     """
-    if env_name=="Ant-v1":
-        expert_policy = "seals-Ant-v1"
-        expert_data ="HumanCompatibleAI/ppo-seals-Ant-v1"
-    elif env_name == "HalfCheetah-v1":
-        expert_policy = "seals-HalfCheetah-v1"
-        expert_data = "HumanCompatibleAI/ppo-seals-HalfCheetah-v1"
-    elif env_name == "Hopper-v1":
-        expert_policy= "seals-Hopper-v1"
-        expert_data ="HumanCompatibleAI/ppo-seals-Hopper-v1"
-    elif env_name == "Walker2d-v1":
-        expert_policy = "seals-Walker2d-v1"
-        expert_data = "HumanCompatibleAI/ppo-seals-Walker2d-v1"
-    else:
-        return None
+
+    # expert_data = torch.load(f'imitation_expert/{env_name}.pt').numpy()
 
     rng = np.random.default_rng(seed)
 
@@ -55,12 +44,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         post_wrappers=[lambda env, _: RolloutInfoWrapper(env)],  # to compute rollouts
     )
 
-    expert = load_policy(
-        "ppo-huggingface",
-        organization="HumanCompatibleAI",
-        env_name=expert_policy,
-        venv=env,
-    )
+    expert = PPO.load(f"./imitation/imitation_expert/{env_name}")
 
     rollouts = rollout.rollout(
         expert,
@@ -68,7 +52,8 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         rollout.make_sample_until(min_timesteps=None, min_episodes=60),
         rng=np.random.default_rng(seed),
     )
-    print("expert sample:", rollouts[:1])
+    # print("expert sample:", rollouts[:1])
+    transitions = rollout.flatten_trajectories(rollouts)
 
     learner = PPO(
         env=env,
@@ -81,6 +66,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         clip_range=0.1,
         vf_coef=0.1,
         seed=seed,
+        verbose=0
     )
     reward_net = BasicRewardNet(
         observation_space=env.observation_space,
@@ -90,7 +76,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
 
     agent = None
     reward = None
-        # 根据算法选择对应实现
+    # 根据算法选择对应实现
     if algorithm == "GAIL":
         gail_trainer = GAIL(
             demonstrations=rollouts,
@@ -100,29 +86,20 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             venv=env,
             gen_algo=learner,
             reward_net=reward_net,
+            allow_variable_horizon=True,
+            verbose=0
         )
 
         # train the learner and evaluate again
         gail_trainer.train(20000)  # Train for 800_000 steps to match expert.
+        reward, _ = evaluate_policy(
+            gail_trainer.gen_algo, env, 100, return_episode_rewards=True,
+        )
         env.seed(seed)
-        reward, _ = evaluate_policy( learner, env, 100, return_episode_rewards=True)
 
         agent = gail_trainer.gen_algo
 
     elif algorithm == "AIRL":
-        #
-        # learner = PPO(
-        #     env=env,
-        #     policy=MlpPolicy,
-        #     batch_size=64,
-        #     ent_coef=0.0,
-        #     learning_rate=0.0005,
-        #     gamma=0.95,
-        #     clip_range=0.1,
-        #     vf_coef=0.1,
-        #     n_epochs=5,
-        #     seed=seed,
-        # )
 
         airl_trainer = AIRL(
             demonstrations=rollouts,
@@ -132,11 +109,15 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             venv=env,
             gen_algo=learner,
             reward_net=reward_net,
+            allow_variable_horizon=True,
+            verbose=0
         )
 
         airl_trainer.train(20000)  # Train for 2_000_000 steps to match expert.
         env.seed(seed)
-        reward, _ = evaluate_policy(learner, env, 100, return_episode_rewards=True)
+        reward, _ = evaluate_policy(
+            airl_trainer.gen_algo, env, 100, return_episode_rewards=True,
+        )
 
         agent = airl_trainer.gen_algo
 
@@ -158,7 +139,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         )
         bc_trainer.train(n_epochs=100)
         reward, _ = evaluate_policy(bc_trainer.policy, env, 10)
-        agent = bc_trainer.policy
+        agent = bc_trainer
 
     elif algorithm == "SQIL":
 
@@ -170,7 +151,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         # Hint: set to 1_000_000 to match the expert performance.
         sqil_trainer.train(total_timesteps=1_000)
         reward, _ = evaluate_policy(sqil_trainer.policy, sqil_trainer.venv, 10)
-        agent = sqil_trainer.policy
+        agent = sqil_trainer
 
     elif algorithm == "Dagger":
 
@@ -179,32 +160,37 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             action_space=env.action_space,
             rng=rng,
         )
-        with tempfile.TemporaryDirectory(prefix="dagger_example_") as tmpdir:
-            print(tmpdir)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir = str(tmpdir)
             dagger_trainer = SimpleDAggerTrainer(
                 venv=env,
                 scratch_dir=tmpdir,
                 expert_policy=expert,
                 bc_trainer=bc_trainer,
-                rng=rng,
-            )
+                rng=rng            )
             dagger_trainer.train(8_000)
-
         reward, _ = evaluate_policy(dagger_trainer.policy, env, 10)
-        agent = dagger_trainer.policy
+        agent = dagger_trainer
 
     else:
         raise ValueError(f"Unsupported algorithm: {algorithm}")
 
-    obs = rollouts.obs
-    acts = rollouts.acts
+    obs = transitions.obs
+    acts = transitions.acts
 
-    input_values, input_log_prob, input_entropy = agent.evaluate_actions(obs, acts)
-    target_values, target_log_prob, target_entropy = expert.policy.evaluate_actions(obs, acts)
+    obs_th = torch.as_tensor(obs, device=device)
+    acts_th = torch.as_tensor(acts, device=device)
+
+    agent.policy.to(device)
+    expert.policy.to(device)
+
+    input_values, input_log_prob, input_entropy = agent.policy.evaluate_actions(obs_th, acts_th)
+    target_values, target_log_prob, target_entropy = expert.policy.evaluate_actions(obs_th, acts_th)
 
     kl_div = torch.mean(torch.dot(torch.exp(target_log_prob), target_log_prob - input_log_prob))
 
-    return kl_div,reward
+    return float(kl_div), reward
+
 
 if __name__ == "__main__":
     # 加载专家数据
@@ -225,14 +211,13 @@ if __name__ == "__main__":
     torch.set_num_threads(1)
     np.set_printoptions(precision=3, suppress=True)
     system.reproduce(seed)
-    pid=os.getpid()
+    pid = os.getpid()
 
     # assumptions
-    assert algorithm in ['GAIL','AIRL','BC','SQIL','Dagger','BIRL']
-
+    assert algorithm in ['GAIL', 'AIRL', 'BC', 'SQIL', 'Dagger', 'BIRL']
 
     # logs
-    exp_id = f"logs//{env_name}/exp-imitatioon-{num_expert_trajs}/{algorithm}" # task/obj/date structure
+    exp_id = f"logs//{env_name}/exp-imitatioon-{num_expert_trajs}/{algorithm}"  # task/obj/date structure
     if not os.path.exists(exp_id):
         os.makedirs(exp_id)
 
@@ -250,7 +235,6 @@ if __name__ == "__main__":
     os.makedirs(os.path.join(log_folder, 'model'))
     os.makedirs(os.path.join(log_folder, env_name + "_" + algorithm))
 
-
     # environment
     env_fn = lambda: gym.make(env_name)
     gym_env = env_fn()
@@ -260,29 +244,27 @@ if __name__ == "__main__":
         state_indices = list(range(state_size))
 
     # load expert samples from trained policy
-    #expert_data = torch.load(f'Expert/{env_name}.pt')
+    # expert_data = torch.load(f'Expert/{env_name}.pt')
 
     # tensorboard
     global writer
     writer = tb.SummaryWriter(log_folder + '/' + env_name + "_" + algorithm, flush_secs=1)
 
-
     # 开始评估
 
     for iteration in range(n_itrs):
         print(f"Training with {algorithm}...")
-        kl_div,reward = train_algorithm(algorithm, env_name, device)
+        kl_div, reward = train_algorithm(algorithm, env_name, device)
 
         # 记录到 TensorBoard
-        writer.add_scalar( env_name + "/distance", kl_div, iteration)
-        writer.add_scalar( env_name + "/reward", reward, iteration)
+        writer.add_scalar(env_name + "/distance", kl_div, iteration)
+        writer.add_scalar(env_name + "/reward", reward, iteration)
 
         logger.record_tabular("iteration", iteration)
         logger.record_tabular("distance", kl_div)
-        logger.record_tabular("reward", iteration)
+        logger.record_tabular("reward", reward)
         logger.dump_tabular()
 
         print(f"[{algorithm}] Iteration {iteration}: KL={kl_div}, Reward={reward}")
 
     writer.close()
-

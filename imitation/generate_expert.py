@@ -19,6 +19,9 @@ def train_expert(env_name, total_timesteps=200000):
     model = PPO("MlpPolicy", env, verbose=0)
     model.learn(total_timesteps=total_timesteps)
     print("Expert training completed!")
+
+    model.save(f"imitation_expert/{env_name}")
+
     return model
 
 # 收集专家轨迹
@@ -59,11 +62,12 @@ def collect_expert_trajectories(model, env_name, num_trajectories, max_steps):
 
 # 保存轨迹
 def save_trajectories(trajectories):
-    torch.save(trajectories, f"./Expert/{env_name}.pt")
+    torch.save(trajectories, f"imitation_expert/{env_name}.pt")
     print("Trajectories saved successfully!")
 
 # 主流程
 if __name__ == "__main__":
+
     # 训练专家模型
     expert_model = train_expert(env_name, total_timesteps=200000)
 
@@ -71,6 +75,6 @@ if __name__ == "__main__":
     expert_trajectories = collect_expert_trajectories(
         expert_model, env_name, num_trajectories, max_steps
     )
-    print(expert_trajectories[:5])
+    print(expert_trajectories[:1])
     # 保存轨迹到文件
     save_trajectories(save_trajectories)
