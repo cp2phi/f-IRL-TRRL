@@ -5920,3 +5920,24 @@ SAC Training | Evaluation: 4845.236 Timestep: 1 Elapsed 65s
 SAC Training End: time 255s
 collect trajs 72s
 train disc 9s
+fkl loss: -21396284.0
+*****************************************
+env_steps: 1405000: Running fkl: 19.355 rkl: 9.572 time: 2s
+*****************************************
+real det return avg: 7505.18
+real sto return avg: 6826.42
+--2024-12-05 19:53:54.686004 NZDT--
+| Itration            | 281       |
+| Real Det Return     | 7.51e+03  |
+| Real Sto Return     | 6.83e+03  |
+| Reward Loss         | -2.14e+07 |
+| Running Env Steps   | 1405000   |
+| Running Forward KL  | 19.4      |
+| Running Reverse KL  | 9.57      |
+| Running Update Time | 281       |
+-----------------------------------
+Training SAC for IRL agent: Total steps 5000
+SAC Training | Evaluation: 5213.478 Timestep: 1 Elapsed 65s
+SAC Training End: time 253s
+collect trajs 72s
+train disc 9s
