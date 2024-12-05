@@ -65,7 +65,8 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         clip_range=0.1,
         vf_coef=0.1,
         seed=seed,
-        verbose=0
+        verbose=0,
+        device=device
     )
     reward_net = BasicRewardNet(
         observation_space=env.observation_space,
@@ -133,6 +134,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             action_space=env.action_space,
             demonstrations=transitions,
             rng=rng,
+            device=device
         )
         bc_trainer.train(n_epochs=100)
         reward, _ = evaluate_policy(bc_trainer.policy, env, 10)
@@ -156,6 +158,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             observation_space=env.observation_space,
             action_space=env.action_space,
             rng=rng,
+            device=device
         )
         with tempfile.TemporaryDirectory() as tmpdir:
             tmpdir = str(tmpdir)
