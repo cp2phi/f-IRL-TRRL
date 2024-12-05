@@ -1,4 +1,3 @@
-import os
 import tempfile
 
 import gymnasium as gym
@@ -87,7 +86,6 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             gen_algo=learner,
             reward_net=reward_net,
             allow_variable_horizon=True,
-            verbose=0
         )
 
         # train the learner and evaluate again
@@ -110,7 +108,6 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             gen_algo=learner,
             reward_net=reward_net,
             allow_variable_horizon=True,
-            verbose=0
         )
 
         airl_trainer.train(20000)  # Train for 2_000_000 steps to match expert.
