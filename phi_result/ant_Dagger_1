@@ -1,0 +1,84 @@
+2024-12-05 20:21:11.530328: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-12-05 20:21:11.556604: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1733383271.592195 2525220 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1733383271.602841 2525220 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-12-05 20:21:11.635353: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Logging to logs//Ant-v4/exp-imitatioon-16/Dagger/2024_12_05_20_21_17
+/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+Logging to directory: logs//Ant-v4/exp-imitatioon-16/Dagger/2024_12_05_20_21_17
+pid 2525220
+Training with Dagger...
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 89.76 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 87.44 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 137.54 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 132.29 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 146.72 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 140.67 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 142.72 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 137.82 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 145.83 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 140.24 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 143.00 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 138.29 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 142.45 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 136.70 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 141.52 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 136.95 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 143.73 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 139.00 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 138.47 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 133.84 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 142.21 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 137.28 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.89 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 140.05 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 142.73 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 137.78 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 142.24 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 137.35 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 142.61 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 137.76 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 147.18 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 141.88 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 171.36 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 164.15 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 143.01 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 138.07 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 137.78 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 133.30 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 160.58 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 153.81 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 147.54 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 142.28 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 138.11 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 133.59 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 145.58 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 140.13 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 149.89 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.71 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 148.56 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 143.31 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 162.71 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 156.84 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 156.17 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 150.09 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.43 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 139.28 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 147.39 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 142.47 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 152.00 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 146.40 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 151.12 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 145.92 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 150.90 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 145.73 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 154.16 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 148.72 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.74 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 139.44 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 152.95 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 147.07 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.53 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 139.38 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 130.52 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 126.49 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 173.07 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 166.04 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 165.82 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 159.19 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 146.99 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 141.95 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 147.50 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 141.68 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 150.25 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.98 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 138.05 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 133.03 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 149.45 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.11 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 150.19 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.93 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 151.43 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 146.11 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 149.92 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 144.70 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 145.45 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 139.91 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 151.44 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 146.22 examples/s]
+Saving the dataset (0/1 shards):   0%|          | 0/1 [00:00<?, ? examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 116.90 examples/s]Saving the dataset (1/1 shards): 100%|██████████| 1/1 [00:00<00:00, 112.91 examples/s]
+0batch [00:00, ?batch/s]0batch [00:00, ?batch/s]
+Traceback (most recent call last):
+  File "/home/pche321/Code/f-IRL-TRRL/imitation/train_imitation.py", line 254, in <module>
+    kl_div, reward = train_algorithm(algorithm, env_name, device)
+  File "/home/pche321/Code/f-IRL-TRRL/imitation/train_imitation.py", line 168, in train_algorithm
+    dagger_trainer.train(8_000)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/imitation/algorithms/dagger.py", line 693, in train
+    self.extend_and_update(bc_train_kwargs)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/imitation/algorithms/dagger.py", line 494, in extend_and_update
+    self.bc_trainer.train(**bc_train_kwargs)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/imitation/algorithms/bc.py", line 495, in train
+    training_metrics = self.loss_calculator(self.policy, obs_tensor, acts)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/imitation/algorithms/bc.py", line 130, in __call__
+    (_, log_prob, entropy) = policy.evaluate_actions(
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/stable_baselines3/common/policies.py", line 738, in evaluate_actions
+    log_prob = distribution.log_prob(actions)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/stable_baselines3/common/distributions.py", line 175, in log_prob
+    log_prob = self.distribution.log_prob(actions)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/torch/distributions/normal.py", line 89, in log_prob
+    -((value - self.loc) ** 2) / (2 * var)
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!

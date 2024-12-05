@@ -185,7 +185,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
     target_values, target_log_prob, target_entropy = expert.policy.evaluate_actions(obs_th, acts_th)
 
     kl_div = torch.mean(torch.dot(torch.exp(target_log_prob), target_log_prob - input_log_prob))
-
+    print("reward:",reward)
     return float(kl_div), reward
 
 
@@ -204,7 +204,7 @@ if __name__ == "__main__":
 
     # system: device, threads, seed, pid
     device = torch.device(f"cuda:{v['cuda']}" if torch.cuda.is_available() and v['cuda'] >= 0 else "cpu")
-
+    print("device:",device)
     torch.set_num_threads(1)
     np.set_printoptions(precision=3, suppress=True)
     system.reproduce(seed)

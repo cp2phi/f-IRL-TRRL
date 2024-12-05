@@ -1,0 +1,30 @@
+2024-12-05 20:21:08.027970: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-12-05 20:21:08.056470: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1733383268.095800 2525068 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1733383268.107707 2525068 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-12-05 20:21:08.144051: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Logging to logs//Ant-v4/exp-imitatioon-16/BC/2024_12_05_20_21_14
+/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+Logging to directory: logs//Ant-v4/exp-imitatioon-16/BC/2024_12_05_20_21_14
+pid 2525068
+Training with BC...
+0batch [00:00, ?batch/s]0batch [00:00, ?batch/s]
+Traceback (most recent call last):
+  File "/home/pche321/Code/f-IRL-TRRL/imitation/train_imitation.py", line 254, in <module>
+    kl_div, reward = train_algorithm(algorithm, env_name, device)
+  File "/home/pche321/Code/f-IRL-TRRL/imitation/train_imitation.py", line 137, in train_algorithm
+    bc_trainer.train(n_epochs=100)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/imitation/algorithms/bc.py", line 495, in train
+    training_metrics = self.loss_calculator(self.policy, obs_tensor, acts)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/imitation/algorithms/bc.py", line 130, in __call__
+    (_, log_prob, entropy) = policy.evaluate_actions(
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/stable_baselines3/common/policies.py", line 738, in evaluate_actions
+    log_prob = distribution.log_prob(actions)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/stable_baselines3/common/distributions.py", line 175, in log_prob
+    log_prob = self.distribution.log_prob(actions)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/torch/distributions/normal.py", line 89, in log_prob
+    -((value - self.loc) ** 2) / (2 * var)
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:0 and cpu!

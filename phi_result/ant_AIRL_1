@@ -1,0 +1,274 @@
+2024-12-05 20:21:03.982650: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-12-05 20:21:04.008790: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1733383264.044486 2524919 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1733383264.055328 2524919 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-12-05 20:21:04.094551: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Logging to logs//Ant-v4/exp-imitatioon-16/AIRL/2024_12_05_20_21_09
+/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/stable_baselines3/common/on_policy_algorithm.py:150: UserWarning: You are trying to run PPO on the GPU, but it is primarily intended to run on the CPU when not using a CNN policy (you are using ActorCriticPolicy which should be a MlpPolicy). See https://github.com/DLR-RM/stable-baselines3/issues/1245 for more info. You can pass `device='cpu'` or `export CUDA_VISIBLE_DEVICES=` to force using the CPU.Note: The model will train, but the GPU utilization will be poor and the training might take longer than on CPU.
+  warnings.warn(
+Logging to directory: logs//Ant-v4/exp-imitatioon-16/AIRL/2024_12_05_20_21_09
+pid 2524919
+Training with AIRL...
+Running with `allow_variable_horizon` set to True. Some algorithms are biased towards shorter or longer episodes, which may significantly confound results. Additionally, even unbiased algorithms can exploit the information leak from the termination condition, producing spuriously high performance. See https://imitation.readthedocs.io/en/latest/getting-started/variable-horizon.html for more information.
+round:   0%|          | 0/1 [00:00<?, ?it/s]                                            round:   0%|          | 0/1 [00:54<?, ?it/s]------------------------------------------
+| raw/                        |          |
+|    gen/rollout/ep_len_mean  | 133      |
+|    gen/rollout/ep_rew_mean  | -143     |
+|    gen/time/fps             | 303      |
+|    gen/time/iterations      | 1        |
+|    gen/time/time_elapsed    | 54       |
+|    gen/time/total_timesteps | 16384    |
+------------------------------------------
+                                            round:   0%|          | 0/1 [01:28<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.0019   |
+|    disc/disc_loss                   | 4.62     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:28<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00194  |
+|    disc/disc_loss                   | 4.61     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:28<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00197  |
+|    disc/disc_loss                   | 4.59     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:28<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00199  |
+|    disc/disc_loss                   | 4.58     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:28<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00205  |
+|    disc/disc_loss                   | 4.57     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:28<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00208  |
+|    disc/disc_loss                   | 4.55     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:29<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00216  |
+|    disc/disc_loss                   | 4.55     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:29<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00219  |
+|    disc/disc_loss                   | 4.53     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:29<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00223  |
+|    disc/disc_loss                   | 4.52     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:29<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00227  |
+|    disc/disc_loss                   | 4.51     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:29<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00229  |
+|    disc/disc_loss                   | 4.5      |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:29<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00236  |
+|    disc/disc_loss                   | 4.49     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:29<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.0024   |
+|    disc/disc_loss                   | 4.48     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:29<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00247  |
+|    disc/disc_loss                   | 4.46     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:30<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00247  |
+|    disc/disc_loss                   | 4.46     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:30<?, ?it/s]--------------------------------------------------
+| raw/                                |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00259  |
+|    disc/disc_loss                   | 4.42     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+--------------------------------------------------
+                                            round:   0%|          | 0/1 [01:30<?, ?it/s]--------------------------------------------------
+| mean/                               |          |
+|    disc/disc_acc                    | 0.5      |
+|    disc/disc_acc_expert             | 1        |
+|    disc/disc_acc_gen                | 0        |
+|    disc/disc_entropy                | 0.00221  |
+|    disc/disc_loss                   | 4.53     |
+|    disc/disc_proportion_expert_pred | 1        |
+|    disc/disc_proportion_expert_true | 0.5      |
+|    disc/global_step                 | 1        |
+|    disc/n_expert                    | 2.05e+03 |
+|    disc/n_generated                 | 2.05e+03 |
+|    gen/rollout/ep_len_mean          | 133      |
+|    gen/rollout/ep_rew_mean          | -143     |
+|    gen/time/fps                     | 303      |
+|    gen/time/iterations              | 1        |
+|    gen/time/time_elapsed            | 54       |
+|    gen/time/total_timesteps         | 1.64e+04 |
+|    gen/train/approx_kl              | 0.0042   |
+|    gen/train/clip_fraction          | 0.206    |
+|    gen/train/clip_range             | 0.1      |
+|    gen/train/entropy_loss           | -11.3    |
+|    gen/train/explained_variance     | -0.776   |
+|    gen/train/learning_rate          | 0.0004   |
+|    gen/train/loss                   | 0.0472   |
+|    gen/train/n_updates              | 5        |
+|    gen/train/policy_gradient_loss   | -0.00446 |
+|    gen/train/std                    | 1        |
+|    gen/train/value_loss             | 1.39     |
+--------------------------------------------------
+round: 100%|██████████| 1/1 [01:30<00:00, 90.15s/it]round: 100%|██████████| 1/1 [01:30<00:00, 90.15s/it]
+/home/pche321/Code/f-IRL-TRRL/imitation/train_imitation.py:178: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at ../torch/csrc/utils/tensor_numpy.cpp:206.)
+  obs_th = torch.as_tensor(obs, device=device)
+Traceback (most recent call last):
+  File "/home/pche321/Code/f-IRL-TRRL/imitation/train_imitation.py", line 258, in <module>
+    writer.add_scalar(env_name + "/reward", reward, iteration)
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/torch/utils/tensorboard/writer.py", line 378, in add_scalar
+    summary = scalar(
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/torch/utils/tensorboard/summary.py", line 371, in scalar
+    tensor = make_np(tensor).squeeze()
+  File "/home/pche321/.conda/envs/f-IRL-TRRL/lib/python3.9/site-packages/torch/utils/tensorboard/_convert_np.py", line 25, in make_np
+    raise NotImplementedError(
+NotImplementedError: Got <class 'list'>, but numpy array or torch tensor are expected.
