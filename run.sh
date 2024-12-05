@@ -26,7 +26,7 @@ export PYTHONPATH=${PWD}:$PYTHONPATH
 
 #KL
 #python firl/irl_samples.py configs/samples/agents/ant.yml
-python firl/irl_samples.py configs/samples/agents/halfcheetah.yml
+#python firl/irl_samples.py configs/samples/agents/halfcheetah.yml
 #python firl/irl_samples.py configs/samples/agents/hopper.yml
 #python firl/irl_samples.py configs/samples/agents/walker2d.yml
 

@@ -1,0 +1,79 @@
+2024-12-05 14:37:47.822851: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-12-05 14:37:47.851113: E external/local_xla/xla/stream_executor/cuda/cuda_fft.cc:477] Unable to register cuFFT factory: Attempting to register factory for plugin cuFFT when one has already been registered
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1733362667.887882 2415697 cuda_dnn.cc:8310] Unable to register cuDNN factory: Attempting to register factory for plugin cuDNN when one has already been registered
+E0000 00:00:1733362667.899142 2415697 cuda_blas.cc:1418] Unable to register cuBLAS factory: Attempting to register factory for plugin cuBLAS when one has already been registered
+2024-12-05 14:37:47.932528: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+phi True
+phi cuda:5
+Logging to logs/Walker2dFH-v0/exp-16/rkl/2024_12_05_14_37_50
+/home/pche321/Code/f-IRL-TRRL/firl/irl_samples.py:122: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  expert_trajs = torch.load(f'expert_data/states/{env_name}.pt').numpy()[:, :, state_indices]
+Logging to directory: logs/Walker2dFH-v0/exp-16/rkl/2024_12_05_14_37_50
+pid 2415697
+(16, 1000, 17) (16000, 17)
+Reinitializing sac
+Training SAC for IRL agent: Total steps 5000
+SAC Training | Evaluation: -602.266 Timestep: 1 Elapsed 60s
+SAC Training End: time 215s
+collect trajs 64s
+train disc 8s
+rkl loss: 24.10915756225586
+*****************************************
+env_steps: 0: Running fkl: 27.030 rkl: 401.046 time: 4s
+*****************************************
+real det return avg: -13.74
+real sto return avg: -21.68
+-2024-12-05 14:43:02.216145 NZDT--
+| Itration            | 0        |
+| Real Det Return     | -13.7    |
+| Real Sto Return     | -21.7    |
+| Reward Loss         | 24.1     |
+| Running Env Steps   | 0        |
+| Running Forward KL  | 27       |
+| Running Reverse KL  | 401      |
+| Running Update Time | 0        |
+----------------------------------
+Training SAC for IRL agent: Total steps 5000
+SAC Training | Evaluation: -259.828 Timestep: 1 Elapsed 61s
+SAC Training End: time 253s
+collect trajs 69s
+train disc 9s
+rkl loss: 212.44857788085938
+*****************************************
+env_steps: 5000: Running fkl: 26.160 rkl: 395.009 time: 4s
+*****************************************
+real det return avg: -23.11
+real sto return avg: -32.80
+-2024-12-05 14:48:59.599404 NZDT--
+| Itration            | 1        |
+| Real Det Return     | -23.1    |
+| Real Sto Return     | -32.8    |
+| Reward Loss         | 212      |
+| Running Env Steps   | 5000     |
+| Running Forward KL  | 26.2     |
+| Running Reverse KL  | 395      |
+| Running Update Time | 1        |
+----------------------------------
+Training SAC for IRL agent: Total steps 5000
+SAC Training | Evaluation: -263.800 Timestep: 1 Elapsed 69s
+SAC Training End: time 269s
+collect trajs 69s
+train disc 8s
+rkl loss: -105.04561614990234
+*****************************************
+env_steps: 10000: Running fkl: 25.870 rkl: 391.186 time: 4s
+*****************************************
+real det return avg: -27.60
+real sto return avg: -31.00
+-2024-12-05 14:55:14.402204 NZDT--
+| Itration            | 2        |
+| Real Det Return     | -27.6    |
+| Real Sto Return     | -31      |
+| Reward Loss         | -105     |
+| Running Env Steps   | 10000    |
+| Running Forward KL  | 25.9     |
+| Running Reverse KL  | 391      |
+| Running Update Time | 2        |
+----------------------------------
