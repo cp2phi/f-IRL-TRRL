@@ -6398,3 +6398,8 @@ real sto return avg: 7986.56
 | Running Reverse KL  | 10.2      |
 | Running Update Time | 303       |
 -----------------------------------
+Training SAC for IRL agent: Total steps 5000
+SAC Training | Evaluation: 5429.529 Timestep: 1 Elapsed 66s
+SAC Training End: time 256s
+collect trajs 65s
+train disc 8s

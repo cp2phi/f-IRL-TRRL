@@ -92,7 +92,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         # train the learner and evaluate again
         gail_trainer.train(20000)  # Train for 800_000 steps to match expert.
         reward, _ = evaluate_policy(
-            gail_trainer.gen_algo, env, 100, return_episode_rewards=True,
+            gail_trainer.gen_algo, env, 1, return_episode_rewards=True,
         )
         env.seed(seed)
 
@@ -114,7 +114,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         airl_trainer.train(20000)  # Train for 2_000_000 steps to match expert.
         env.seed(seed)
         reward, _ = evaluate_policy(
-            airl_trainer.gen_algo, env, 100, return_episode_rewards=True,
+            airl_trainer.gen_algo, env, 1, return_episode_rewards=True,
         )
 
         agent = airl_trainer.gen_algo
@@ -137,7 +137,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             device=device
         )
         bc_trainer.train(n_epochs=100)
-        reward, _ = evaluate_policy(bc_trainer.policy, env, 10)
+        reward, _ = evaluate_policy(bc_trainer.policy, env, 1)
         agent = bc_trainer
 
     elif algorithm == "SQIL":
@@ -149,7 +149,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         )
         # Hint: set to 1_000_000 to match the expert performance.
         sqil_trainer.train(total_timesteps=1_000)
-        reward, _ = evaluate_policy(sqil_trainer.policy, sqil_trainer.venv, 10)
+        reward, _ = evaluate_policy(sqil_trainer.policy, sqil_trainer.venv, 1)
         agent = sqil_trainer
 
     elif algorithm == "Dagger":
@@ -169,7 +169,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
                 bc_trainer=bc_trainer,
                 rng=rng            )
             dagger_trainer.train(8_000)
-        reward, _ = evaluate_policy(dagger_trainer.policy, env, 10)
+        reward, _ = evaluate_policy(dagger_trainer.policy, env, 1)
         agent = dagger_trainer
 
     else:
@@ -189,7 +189,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
 
     kl_div = torch.mean(torch.dot(torch.exp(target_log_prob), target_log_prob - input_log_prob))
     print("reward:",reward)
-    return float(kl_div), reward
+    return float(kl_div), float(reward)
 
 
 if __name__ == "__main__":
