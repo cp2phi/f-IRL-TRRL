@@ -1,0 +1,109 @@
+{
+  "IS": false,
+  "adv_irl": {
+    "disc": {
+      "clamp_magnitude": 10.0,
+      "hid_act": "tanh",
+      "hid_dim": 128,
+      "model_type": "mlp_disc",
+      "num_layer_blocks": 2,
+      "use_bn": false
+    },
+    "disc_lr": 0.0003,
+    "disc_momentum": 0.0,
+    "disc_optim_batch_size": 256,
+    "eval_interval": 200,
+    "grad_pen_weight": 4.0,
+    "min_steps_before_training": 5000,
+    "normalize": true,
+    "num_disc_updates_per_loop_iter": 1,
+    "num_epochs": 100,
+    "num_policy_updates_per_loop_iter": 1,
+    "num_steps_between_train_calls": 1000,
+    "num_steps_per_epoch": 100000,
+    "num_update_loops_per_train_call": 100,
+    "policy_optim_batch_size": 256,
+    "replay_buffer_size": 200000,
+    "reward_scale": 0.2,
+    "save_interval": 0,
+    "use_grad_pen": true
+  },
+  "bc": {
+    "epochs": 10000,
+    "eval_episodes": 20,
+    "eval_freq": 100,
+    "expert_episodes": 20
+  },
+  "critic": {
+    "batch_size": 800,
+    "hid_act": "tanh",
+    "hid_dim": 128,
+    "iter": 1200,
+    "lam": 0.5,
+    "lr": 0.0003,
+    "model_type": "resnet_disc",
+    "momentum": 0.0,
+    "num_layer_blocks": 3,
+    "use_bn": false,
+    "weight_decay": 0.0001
+  },
+  "cuda": -1,
+  "disc": {
+    "batch_size": 800,
+    "clamp_magnitude": 10.0,
+    "hid_act": "tanh",
+    "hid_dim": 128,
+    "iter": 1200,
+    "lr": 0.0003,
+    "model_type": "resnet_disc",
+    "momentum": 0.9,
+    "num_layer_blocks": 6,
+    "reinit": false,
+    "use_bn": false,
+    "weight_decay": 0.0001
+  },
+  "env": {
+    "T": 1000,
+    "env_name": "Ant-v1",
+    "state_indices": "all"
+  },
+  "irl": {
+    "eval_episodes": 20,
+    "expert_episodes": 16,
+    "n_itrs": 300,
+    "resample_episodes": 10,
+    "save_interval": 0,
+    "training_trajs": 10
+  },
+  "obj": "GAIL",
+  "reward": {
+    "clamp_magnitude": 10,
+    "gradient_step": 1,
+    "hid_act": "relu",
+    "hidden_sizes": [
+      128,
+      128
+    ],
+    "lr": 0.0001,
+    "momentum": 0.9,
+    "residual": false,
+    "use_bn": false,
+    "weight_decay": 0.001
+  },
+  "sac": {
+    "alpha": 0.2,
+    "automatic_alpha_tuning": false,
+    "batch_size": 100,
+    "buffer_size": 1000000,
+    "epochs": 5,
+    "k": 1,
+    "log_step_interval": 5000,
+    "lr": 0.001,
+    "num_test_episodes": 10,
+    "random_explore_episodes": 1,
+    "reinitialize": false,
+    "update_every": 1,
+    "update_num": 1
+  },
+  "seed": 1
+}

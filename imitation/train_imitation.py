@@ -1,8 +1,5 @@
 
-import dateutil.tz
 import gym
-
-#import gymnasium as gym
 import numpy as np
 import torch
 from stable_baselines3 import PPO
@@ -34,16 +31,16 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
     """
     根据指定的算法训练模型。
     """
-    if env_name=="Ant-v4":
+    if env_name=="Ant-v1":
         expert_policy = "seals-Ant-v1"
         expert_data ="HumanCompatibleAI/ppo-seals-Ant-v1"
-    elif env_name == "HalfCheetah-v4":
+    elif env_name == "HalfCheetah-v1":
         expert_policy = "seals-HalfCheetah-v1"
         expert_data = "HumanCompatibleAI/ppo-seals-HalfCheetah-v1"
-    elif env_name == "Hopper-v3":
+    elif env_name == "Hopper-v1":
         expert_policy= "seals-Hopper-v1"
         expert_data ="HumanCompatibleAI/ppo-seals-Hopper-v1"
-    elif env_name == "Walker2d-v3":
+    elif env_name == "Walker2d-v1":
         expert_policy = "seals-Walker2d-v1"
         expert_data = "HumanCompatibleAI/ppo-seals-Walker2d-v1"
     else:
@@ -235,7 +232,7 @@ if __name__ == "__main__":
 
 
     # logs
-    exp_id = f"./Log/{env_name}/exp-{num_expert_trajs}/{algorithm}" # task/obj/date structure
+    exp_id = f"logs//{env_name}/exp-imitatioon-{num_expert_trajs}/{algorithm}" # task/obj/date structure
     if not os.path.exists(exp_id):
         os.makedirs(exp_id)
 
@@ -244,7 +241,7 @@ if __name__ == "__main__":
     logger.configure(dir=log_folder)
     print(f"Logging to directory: {log_folder}")
 
-    os.system(f'cp ./train_imitation.py {log_folder}')
+    os.system(f'cp imitation/train_imitation.py {log_folder}')
     os.system(f'cp {sys.argv[1]} {log_folder}/variant_{pid}.yml')
     with open(os.path.join(logger.get_dir(), 'variant.json'), 'w') as f:
         json.dump(v, f, indent=2, sort_keys=True)
