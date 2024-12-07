@@ -25,7 +25,8 @@ from imitation.util.networks import RunningNorm
 from imitation.util.util import make_vec_env
 from stable_baselines3.common.evaluation import evaluate_policy
 from imitation.algorithms.dagger import SimpleDAggerTrainer
-
+import logging
+logging.basicConfig(level=logging.ERROR)
 
 def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
     """
@@ -66,7 +67,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
         vf_coef=0.1,
         seed=seed,
         verbose=0,
-        device=device
+        device='cpu'
     )
     reward_net = BasicRewardNet(
         observation_space=env.observation_space,
@@ -134,7 +135,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             action_space=env.action_space,
             demonstrations=transitions,
             rng=rng,
-            device=device
+            device='cpu'
         )
         bc_trainer.train(n_epochs=100)
         reward, _ = evaluate_policy(bc_trainer.policy, env, 1)
@@ -158,7 +159,7 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
             observation_space=env.observation_space,
             action_space=env.action_space,
             rng=rng,
-            device=device
+            device='cpu'
         )
         with tempfile.TemporaryDirectory() as tmpdir:
             tmpdir = str(tmpdir)
@@ -187,8 +188,10 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
     input_values, input_log_prob, input_entropy = agent.policy.evaluate_actions(obs_th, acts_th)
     target_values, target_log_prob, target_entropy = expert.policy.evaluate_actions(obs_th, acts_th)
 
-    kl_div = torch.mean(torch.dot(torch.exp(target_log_prob), target_log_prob - input_log_prob))
-    print("reward:",reward)
+    # kl_div = torch.mean(torch.dot(torch.exp(target_log_prob), target_log_prob - input_log_prob))
+
+    kl_div = torch.nn.functional.kl_div(input_values,target_values)
+
     return float(kl_div), float(reward)
 
 

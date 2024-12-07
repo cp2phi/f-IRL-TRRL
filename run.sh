@@ -31,9 +31,10 @@ export PYTHONPATH=${PWD}:$PYTHONPATH
 #python firl/irl_samples.py configs/samples/agents/walker2d.yml
 
 # GAIL
-python imitation/train_imitation.py configs/imitation/ant_GAIL.yml
-python imitation/train_imitation.py configs/imitation/ant_AIRL.yml
-python imitation/train_imitation.py configs/imitation/ant_BC.yml
-python imitation/train_imitation.py configs/imitation/ant_Dagger.yml
+#python imitation/train_imitation.py configs/imitation/ant_GAIL.yml
+#python imitation/train_imitation.py configs/imitation/ant_AIRL.yml
+#python imitation/train_imitation.py configs/imitation/ant_BC.yml
+#python imitation/train_imitation.py configs/imitation/ant_Dagger.yml
 
 
+python firl/irl_samples.py configs/samples/agents/pendulum_js.yml
