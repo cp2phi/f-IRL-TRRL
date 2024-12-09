@@ -1,7 +1,7 @@
 obj: Dagger
 IS: false
 seed: 1
-cuda: 4
+cuda: -1
 env:
   env_name: Hopper-v3
   T: 1000

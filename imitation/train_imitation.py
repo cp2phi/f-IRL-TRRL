@@ -147,7 +147,6 @@ def Dagger_train():
 
 
 if __name__ == "__main__":
-    # 加载专家数据
     yaml = YAML()
     v = yaml.load(open(sys.argv[1]))
 
