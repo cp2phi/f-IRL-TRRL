@@ -26,10 +26,11 @@ from imitation.util.util import make_vec_env
 from stable_baselines3.common.evaluation import evaluate_policy
 from imitation.algorithms.dagger import SimpleDAggerTrainer
 import logging
+from gym.wrappers import TimeLimit
+
 logging.basicConfig(level=logging.ERROR)
 
-def calculate_record(policy,agent,iteration):
-
+def calculate_record(policy, agent, iteration):
     env.seed(seed)
     reward, _ = evaluate_policy(policy, env, 1)
 
@@ -49,7 +50,7 @@ def calculate_record(policy,agent,iteration):
 
     distance = float(distance)
     reward = float(reward)
-    #distance = torch.nn.functional.kl_div(input_values,target_values)
+    # distance = torch.nn.functional.kl_div(input_values,target_values)
 
     # record to TensorBoard and logger
     writer.add_scalar(env_name + "/distance", distance, iteration)
@@ -64,8 +65,8 @@ def calculate_record(policy,agent,iteration):
 
     return None
 
-def GAIL_train():
 
+def GAIL_train():
     gail_trainer = GAIL(
         demonstrations=rollouts,
         demo_batch_size=1024,
@@ -80,7 +81,7 @@ def GAIL_train():
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
         gail_trainer.train(20000)
-        calculate_record(gail_trainer.gen_algo,gail_trainer.gen_algo,iteration)
+        calculate_record(gail_trainer.gen_algo, gail_trainer.gen_algo, iteration)
 
     return None
 
@@ -100,7 +101,7 @@ def AIRL_train():
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
         airl_trainer.train(20000)
-        calculate_record(airl_trainer.gen_algo,airl_trainer.gen_algo,iteration)
+        calculate_record(airl_trainer.gen_algo, airl_trainer.gen_algo, iteration)
 
     return None
 
@@ -117,7 +118,7 @@ def BC_train():
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
         bc_trainer.train(n_epochs=3)
-        calculate_record(bc_trainer.policy,bc_trainer,iteration)
+        calculate_record(bc_trainer.policy, bc_trainer, iteration)
 
     return None
 
@@ -140,9 +141,10 @@ def Dagger_train():
                 bc_trainer=bc_trainer,
                 rng=rng)
             dagger_trainer.train(1000)
-        calculate_record(dagger_trainer.policy, dagger_trainer,iteration)
+        calculate_record(dagger_trainer.policy, dagger_trainer, iteration)
 
     return None
+
 
 if __name__ == "__main__":
     # 加载专家数据
@@ -160,7 +162,7 @@ if __name__ == "__main__":
 
     # system: device, threads, seed, pid
     device = torch.device(f"cuda:{v['cuda']}" if torch.cuda.is_available() and v['cuda'] >= 0 else "cpu")
-    print("device:",device)
+    print("device:", device)
     torch.set_num_threads(1)
     np.set_printoptions(precision=3, suppress=True)
     system.reproduce(seed)
@@ -210,13 +212,19 @@ if __name__ == "__main__":
     #expert transitions
     expert = PPO.load(f"./imitation/imitation_expert/{env_name}")
 
-    rollouts = rollout.rollout(
-        expert,
-        env,
-        rollout.make_sample_until(min_timesteps=None, min_episodes=60),
-        rng=rng,
-    )
-    transitions = rollout.flatten_trajectories(rollouts)
+    # rollouts = rollout.rollout(
+    #     expert,
+    #     env,
+    #     rollout.make_sample_until(min_timesteps=16*128, min_episodes=16),
+    #     rng=rng,
+    # )
+    # transitions = rollout.flatten_trajectories(rollouts)
+    #
+    # torch.save(transitions,f"./imitation/imitation_expert/transitions_{env_name}.npy")
+    # torch.save(rollouts,f"./imitation/imitation_expert/rollouts_{env_name}.npy")
+
+    transitions = torch.load(f"./imitation/imitation_expert/transitions_{env_name}.npy")
+    rollouts = torch.load(f"./imitation/imitation_expert/rollouts_{env_name}.npy")
 
     # PPO
     learner = PPO(
@@ -254,4 +262,3 @@ if __name__ == "__main__":
         raise ValueError(f"Unsupported algorithm: {algorithm}")
 
     writer.close()
-
