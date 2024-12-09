@@ -28,153 +28,10 @@ from imitation.algorithms.dagger import SimpleDAggerTrainer
 import logging
 logging.basicConfig(level=logging.ERROR)
 
-def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
-    """
-    根据指定的算法训练模型。
-    """
+def calculate_record(policy,agent,iteration):
 
-    # expert_data = torch.load(f'imitation_expert/{env_name}.pt').numpy()
-
-    rng = np.random.default_rng(seed)
-
-    env = make_vec_env(
-        env_name,
-        rng=rng,
-        n_envs=8,
-        post_wrappers=[lambda env, _: RolloutInfoWrapper(env)],  # to compute rollouts
-    )
-
-    expert = PPO.load(f"./imitation/imitation_expert/{env_name}")
-
-    rollouts = rollout.rollout(
-        expert,
-        env,
-        rollout.make_sample_until(min_timesteps=None, min_episodes=60),
-        rng=np.random.default_rng(seed),
-    )
-    # print("expert sample:", rollouts[:1])
-    transitions = rollout.flatten_trajectories(rollouts)
-
-    learner = PPO(
-        env=env,
-        policy=MlpPolicy,
-        batch_size=64,
-        ent_coef=0.0,
-        learning_rate=0.0004,
-        gamma=0.95,
-        n_epochs=5,
-        clip_range=0.1,
-        vf_coef=0.1,
-        seed=seed,
-        verbose=0,
-        device='cpu'
-    )
-    reward_net = BasicRewardNet(
-        observation_space=env.observation_space,
-        action_space=env.action_space,
-        normalize_input_layer=RunningNorm,
-    )
-
-    agent = None
-    reward = None
-    # 根据算法选择对应实现
-    if algorithm == "GAIL":
-        gail_trainer = GAIL(
-            demonstrations=rollouts,
-            demo_batch_size=1024,
-            gen_replay_buffer_capacity=512,
-            n_disc_updates_per_round=8,
-            venv=env,
-            gen_algo=learner,
-            reward_net=reward_net,
-            allow_variable_horizon=True,
-        )
-
-        # train the learner and evaluate again
-        gail_trainer.train(20000)  # Train for 800_000 steps to match expert.
-        reward, _ = evaluate_policy(
-            gail_trainer.gen_algo, env, 1, return_episode_rewards=True,
-        )
-        env.seed(seed)
-
-        agent = gail_trainer.gen_algo
-
-    elif algorithm == "AIRL":
-
-        airl_trainer = AIRL(
-            demonstrations=rollouts,
-            demo_batch_size=2048,
-            gen_replay_buffer_capacity=512,
-            n_disc_updates_per_round=16,
-            venv=env,
-            gen_algo=learner,
-            reward_net=reward_net,
-            allow_variable_horizon=True,
-        )
-
-        airl_trainer.train(20000)  # Train for 2_000_000 steps to match expert.
-        env.seed(seed)
-        reward, _ = evaluate_policy(
-            airl_trainer.gen_algo, env, 1, return_episode_rewards=True,
-        )
-
-        agent = airl_trainer.gen_algo
-
-    elif algorithm == "BC":
-        # env = make_vec_env(
-        #     env_name,
-        #     rng=rng,
-        #     n_envs=1,
-        #     post_wrappers=[lambda env, _: RolloutInfoWrapper(env)],  # for computing rollouts
-        # )
-
-        transitions = rollout.flatten_trajectories(rollouts)
-
-        bc_trainer = BC(
-            observation_space=env.observation_space,
-            action_space=env.action_space,
-            demonstrations=transitions,
-            rng=rng,
-            device='cpu'
-        )
-        bc_trainer.train(n_epochs=100)
-        reward, _ = evaluate_policy(bc_trainer.policy, env, 1)
-        agent = bc_trainer
-
-    elif algorithm == "SQIL":
-
-        sqil_trainer = SQIL(
-            venv=DummyVecEnv([lambda: gym.make(env_name)]),
-            demonstrations=rollouts,
-            policy="MlpPolicy",
-        )
-        # Hint: set to 1_000_000 to match the expert performance.
-        sqil_trainer.train(total_timesteps=1_000)
-        reward, _ = evaluate_policy(sqil_trainer.policy, sqil_trainer.venv, 1)
-        agent = sqil_trainer
-
-    elif algorithm == "Dagger":
-
-        bc_trainer = BC(
-            observation_space=env.observation_space,
-            action_space=env.action_space,
-            rng=rng,
-            device='cpu'
-        )
-        with tempfile.TemporaryDirectory() as tmpdir:
-            tmpdir = str(tmpdir)
-            dagger_trainer = SimpleDAggerTrainer(
-                venv=env,
-                scratch_dir=tmpdir,
-                expert_policy=expert,
-                bc_trainer=bc_trainer,
-                rng=rng            )
-            dagger_trainer.train(8_000)
-        reward, _ = evaluate_policy(dagger_trainer.policy, env, 1)
-        agent = dagger_trainer
-
-    else:
-        raise ValueError(f"Unsupported algorithm: {algorithm}")
+    env.seed(seed)
+    reward, _ = evaluate_policy(policy, env, 1)
 
     obs = transitions.obs
     acts = transitions.acts
@@ -188,12 +45,104 @@ def train_algorithm(algorithm, env_name, device, total_timesteps=200000):
     input_values, input_log_prob, input_entropy = agent.policy.evaluate_actions(obs_th, acts_th)
     target_values, target_log_prob, target_entropy = expert.policy.evaluate_actions(obs_th, acts_th)
 
-    # kl_div = torch.mean(torch.dot(torch.exp(target_log_prob), target_log_prob - input_log_prob))
+    distance = torch.mean(torch.dot(torch.exp(target_log_prob), target_log_prob - input_log_prob))
 
-    kl_div = torch.nn.functional.kl_div(input_values,target_values)
+    distance = float(distance)
+    reward = float(reward)
+    #distance = torch.nn.functional.kl_div(input_values,target_values)
 
-    return float(kl_div), float(reward)
+    # record to TensorBoard and logger
+    writer.add_scalar(env_name + "/distance", distance, iteration)
+    writer.add_scalar(env_name + "/reward", reward, iteration)
 
+    logger.record_tabular("iteration", iteration)
+    logger.record_tabular("distance", distance)
+    logger.record_tabular("reward", reward)
+    logger.dump_tabular()
+
+    print(f"[{algorithm}] Iteration {iteration}: KL={distance}, Reward={reward}")
+
+    return None
+
+def GAIL_train():
+
+    gail_trainer = GAIL(
+        demonstrations=rollouts,
+        demo_batch_size=1024,
+        gen_replay_buffer_capacity=512,
+        n_disc_updates_per_round=8,
+        venv=env,
+        gen_algo=learner,
+        reward_net=reward_net,
+        allow_variable_horizon=True,
+    )
+
+    print(f"Training with {algorithm}...")
+    for iteration in range(n_itrs):
+        gail_trainer.train(20000)
+        calculate_record(gail_trainer.gen_algo,gail_trainer.gen_algo,iteration)
+
+    return None
+
+
+def AIRL_train():
+    airl_trainer = AIRL(
+        demonstrations=rollouts,
+        demo_batch_size=2048,
+        gen_replay_buffer_capacity=512,
+        n_disc_updates_per_round=16,
+        venv=env,
+        gen_algo=learner,
+        reward_net=reward_net,
+        allow_variable_horizon=True,
+    )
+
+    print(f"Training with {algorithm}...")
+    for iteration in range(n_itrs):
+        airl_trainer.train(20000)
+        calculate_record(airl_trainer.gen_algo,airl_trainer.gen_algo,iteration)
+
+    return None
+
+
+def BC_train():
+    bc_trainer = BC(
+        observation_space=env.observation_space,
+        action_space=env.action_space,
+        demonstrations=transitions,
+        rng=rng,
+        device='cpu'
+    )
+
+    print(f"Training with {algorithm}...")
+    for iteration in range(n_itrs):
+        bc_trainer.train(n_epochs=3)
+        calculate_record(bc_trainer.policy,bc_trainer,iteration)
+
+    return None
+
+def Dagger_train():
+    bc_trainer = BC(
+        observation_space=env.observation_space,
+        action_space=env.action_space,
+        rng=rng,
+        device='cpu'
+    )
+
+    print(f"Training with {algorithm}...")
+    for iteration in range(n_itrs):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir = str(tmpdir)
+            dagger_trainer = SimpleDAggerTrainer(
+                venv=env,
+                scratch_dir=tmpdir,
+                expert_policy=expert,
+                bc_trainer=bc_trainer,
+                rng=rng)
+            dagger_trainer.train(1000)
+        calculate_record(dagger_trainer.policy, dagger_trainer,iteration)
+
+    return None
 
 if __name__ == "__main__":
     # 加载专家数据
@@ -207,6 +156,7 @@ if __name__ == "__main__":
     num_expert_trajs = v['irl']['expert_episodes']
     n_itrs = v['irl']['n_itrs']
     algorithm = v['obj']
+    rng = np.random.default_rng(seed)
 
     # system: device, threads, seed, pid
     device = torch.device(f"cuda:{v['cuda']}" if torch.cuda.is_available() and v['cuda'] >= 0 else "cpu")
@@ -246,28 +196,62 @@ if __name__ == "__main__":
     if state_indices == 'all':
         state_indices = list(range(state_size))
 
-    # load expert samples from trained policy
-    # expert_data = torch.load(f'Expert/{env_name}.pt')
+    env = make_vec_env(
+        env_name,
+        rng=rng,
+        n_envs=8,
+        post_wrappers=[lambda env, _: RolloutInfoWrapper(env)],  # to compute rollouts
+    )
 
     # tensorboard
     global writer
     writer = tb.SummaryWriter(log_folder + '/' + env_name + "_" + algorithm, flush_secs=1)
 
-    # 开始评估
+    #expert transitions
+    expert = PPO.load(f"./imitation/imitation_expert/{env_name}")
 
-    for iteration in range(n_itrs):
-        print(f"Training with {algorithm}...")
-        kl_div, reward = train_algorithm(algorithm, env_name, device)
+    rollouts = rollout.rollout(
+        expert,
+        env,
+        rollout.make_sample_until(min_timesteps=None, min_episodes=60),
+        rng=rng,
+    )
+    transitions = rollout.flatten_trajectories(rollouts)
 
-        # 记录到 TensorBoard
-        writer.add_scalar(env_name + "/distance", kl_div, iteration)
-        writer.add_scalar(env_name + "/reward", reward, iteration)
+    # PPO
+    learner = PPO(
+        env=env,
+        policy=MlpPolicy,
+        batch_size=64,
+        ent_coef=0.0,
+        learning_rate=0.0004,
+        gamma=0.95,
+        n_epochs=5,
+        clip_range=0.1,
+        vf_coef=0.1,
+        seed=seed,
+        verbose=0,
+        device='cpu'
+    )
 
-        logger.record_tabular("iteration", iteration)
-        logger.record_tabular("distance", kl_div)
-        logger.record_tabular("reward", reward)
-        logger.dump_tabular()
+    # reward net
+    reward_net = BasicRewardNet(
+        observation_space=env.observation_space,
+        action_space=env.action_space,
+        normalize_input_layer=RunningNorm,
+    )
 
-        print(f"[{algorithm}] Iteration {iteration}: KL={kl_div}, Reward={reward}")
+    # train
+    if algorithm == "GAIL":
+        GAIL_train()
+    elif algorithm == "AIRL":
+        AIRL_train()
+    elif algorithm == "BC":
+        BC_train()
+    elif algorithm == "Dagger":
+        Dagger_train()
+    else:
+        raise ValueError(f"Unsupported algorithm: {algorithm}")
 
     writer.close()
+
