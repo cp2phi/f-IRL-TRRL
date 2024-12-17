@@ -38,3 +38,5 @@ export PYTHONPATH=${PWD}:$PYTHONPATH
 
 
 python firl/irl_samples.py configs/samples/agents/pendulum_js.yml
+
+python imitation/train_imitation.py configs/imitation/walker2d_GAIL.yml
