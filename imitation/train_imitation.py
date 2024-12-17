@@ -69,18 +69,20 @@ def calculate_record(policy, agent, iteration):
 def GAIL_train():
     gail_trainer = GAIL(
         demonstrations=rollouts,
-        demo_batch_size=1024,
+        demo_batch_size=64,
         gen_replay_buffer_capacity=512,
         n_disc_updates_per_round=8,
         venv=env,
         gen_algo=learner,
+        gen_train_timesteps=300,
+        # init_tensorboard=True,
         reward_net=reward_net,
         allow_variable_horizon=True,
     )
 
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
-        gail_trainer.train(20000)
+        gail_trainer.train(300)
         calculate_record(gail_trainer.gen_algo, gail_trainer.gen_algo, iteration)
 
     return None
@@ -89,18 +91,19 @@ def GAIL_train():
 def AIRL_train():
     airl_trainer = AIRL(
         demonstrations=rollouts,
-        demo_batch_size=2048,
+        demo_batch_size=64,
         gen_replay_buffer_capacity=512,
-        n_disc_updates_per_round=16,
+        n_disc_updates_per_round=8,
         venv=env,
         gen_algo=learner,
         reward_net=reward_net,
+        gen_train_timesteps=300,
         allow_variable_horizon=True,
     )
 
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
-        airl_trainer.train(20000)
+        airl_trainer.train(300)
         calculate_record(airl_trainer.gen_algo, airl_trainer.gen_algo, iteration)
 
     return None
@@ -110,6 +113,7 @@ def BC_train():
     bc_trainer = BC(
         observation_space=env.observation_space,
         action_space=env.action_space,
+        batch_size= 64,
         demonstrations=transitions,
         rng=rng,
         device='cpu'
@@ -117,7 +121,7 @@ def BC_train():
 
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
-        bc_trainer.train(n_epochs=20000)
+        bc_trainer.train(n_epochs=300)
         calculate_record(bc_trainer.policy, bc_trainer, iteration)
 
     return None
@@ -126,6 +130,8 @@ def Dagger_train():
     bc_trainer = BC(
         observation_space=env.observation_space,
         action_space=env.action_space,
+        batch_size=64,
+        demonstrations=transitions,
         rng=rng,
         device='cpu'
     )
@@ -140,7 +146,7 @@ def Dagger_train():
                 expert_policy=expert,
                 bc_trainer=bc_trainer,
                 rng=rng)
-            dagger_trainer.train(20000)
+            dagger_trainer.train(300)
         calculate_record(dagger_trainer.policy, dagger_trainer, iteration)
 
     return None
@@ -224,7 +230,8 @@ if __name__ == "__main__":
 
     transitions = torch.load(f"./imitation/imitation_expert/transitions_{env_name}.npy")
     rollouts = torch.load(f"./imitation/imitation_expert/rollouts_{env_name}.npy")
-
+    print("transitions",len(transitions))
+    print("rollouts",len(rollouts))
     # PPO
     learner = PPO(
         env=env,
