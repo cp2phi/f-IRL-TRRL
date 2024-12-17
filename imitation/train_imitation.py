@@ -74,7 +74,7 @@ def GAIL_train():
         n_disc_updates_per_round=8,
         venv=env,
         gen_algo=learner,
-        gen_train_timesteps=300,
+        gen_train_timesteps=10000,
         # init_tensorboard=True,
         reward_net=reward_net,
         allow_variable_horizon=True,
@@ -82,7 +82,7 @@ def GAIL_train():
 
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
-        gail_trainer.train(300)
+        gail_trainer.train(10000)
         calculate_record(gail_trainer.gen_algo, gail_trainer.gen_algo, iteration)
 
     return None
@@ -97,13 +97,13 @@ def AIRL_train():
         venv=env,
         gen_algo=learner,
         reward_net=reward_net,
-        gen_train_timesteps=300,
+        gen_train_timesteps=10000,
         allow_variable_horizon=True,
     )
 
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
-        airl_trainer.train(300)
+        airl_trainer.train(10000)
         calculate_record(airl_trainer.gen_algo, airl_trainer.gen_algo, iteration)
 
     return None
@@ -121,7 +121,7 @@ def BC_train():
 
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
-        bc_trainer.train(n_epochs=300)
+        bc_trainer.train(n_epochs=1000)
         calculate_record(bc_trainer.policy, bc_trainer, iteration)
 
     return None
@@ -146,7 +146,7 @@ def Dagger_train():
                 expert_policy=expert,
                 bc_trainer=bc_trainer,
                 rng=rng)
-            dagger_trainer.train(300)
+            dagger_trainer.train(1000)
         calculate_record(dagger_trainer.policy, dagger_trainer, iteration)
 
     return None
