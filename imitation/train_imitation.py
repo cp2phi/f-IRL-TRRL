@@ -71,7 +71,7 @@ def GAIL_train():
         demonstrations=rollouts,
         demo_batch_size=64,
         gen_replay_buffer_capacity=512,
-        n_disc_updates_per_round=8,
+        n_disc_updates_per_round=10,
         venv=env,
         gen_algo=learner,
         gen_train_timesteps=10000,
@@ -93,7 +93,7 @@ def AIRL_train():
         demonstrations=rollouts,
         demo_batch_size=64,
         gen_replay_buffer_capacity=512,
-        n_disc_updates_per_round=8,
+        n_disc_updates_per_round=10,
         venv=env,
         gen_algo=learner,
         reward_net=reward_net,
@@ -215,7 +215,7 @@ if __name__ == "__main__":
     writer = tb.SummaryWriter(log_folder + '/' + env_name + "_" + algorithm, flush_secs=1)
 
     #expert transitions
-    expert = PPO.load(f"./imitation/imitation_expert/{env_name}")
+    expert = PPO.load(f"./imitation/expert_data/{env_name}")
 
     # rollouts = rollout.rollout(
     #     expert,
@@ -225,8 +225,8 @@ if __name__ == "__main__":
     # )
     # transitions = rollout.flatten_trajectories(rollouts)
     #
-    # torch.save(transitions,f"./imitation/imitation_expert/transitions_{env_name}.npy")
-    # torch.save(rollouts,f"./imitation/imitation_expert/rollouts_{env_name}.npy")
+    # torch.save(transitions,f"./imitation/expert_data/transitions_{env_name}.npy")
+    # torch.save(rollouts,f"./imitation/expert_data/rollouts_{env_name}.npy")
 
     transitions = torch.load(f"./imitation/expert_data/transitions_{env_name}.npy")
     rollouts = torch.load(f"./imitation/expert_data/rollouts_{env_name}.npy")
