@@ -223,9 +223,10 @@ if __name__ == "__main__":
         if v['sac']['automatic_alpha_tuning']:
             logger.record_tabular("alpha", sac_agent.alpha.item())
 
-        writer.add_scalar( env_name + "/distance", metrics['fkl'], itr)
-        writer.add_scalar( env_name + "/reward", real_return_det, itr)
-        writer.add_scalar( env_name + "/loss", loss, itr)
+
+        writer.add_scalar( "Result/distance", metrics['fkl'], itr)
+        writer.add_scalar( "Result/reward", real_return_det, itr)
+        writer.add_scalar( "Result/loss", loss, itr)
 
         # if v['irl']['save_interval'] > 0 and (itr % v['irl']['save_interval'] == 0 or itr == v['irl']['n_itrs']-1):
         #     torch.save(reward_func.state_dict(), os.path.join(logger.get_dir(), f"model/reward_model_{itr}.pkl"))

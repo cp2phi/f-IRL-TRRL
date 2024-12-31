@@ -53,8 +53,8 @@ def calculate_record(policy, agent, iteration):
     # distance = torch.nn.functional.kl_div(input_values,target_values)
 
     # record to TensorBoard and logger
-    writer.add_scalar(env_name + "Result/distance", distance, iteration)
-    writer.add_scalar(env_name + "Result/reward", reward, iteration)
+    writer.add_scalar("Result/distance", distance, iteration)
+    writer.add_scalar("Result/reward", reward, iteration)
 
     logger.record_tabular("iteration", iteration)
     logger.record_tabular("distance", distance)
