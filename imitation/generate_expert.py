@@ -7,10 +7,10 @@ from stable_baselines3 import PPO
 #env_name = "Ant-v4"
 #env_name = "HalfCheetah-v4"
 #env_name = "Hopper-v3" #1000步不结束
-env_name = "Walker2d-v3"
-
-num_trajectories = 20
-max_steps = 1000
+#env_name = "Walker2d-v3"
+env_name = "FrozenLake-v1"
+num_trajectories = 16
+max_steps = 10000
 
 # 训练专家模型
 def train_expert(env_name, total_timesteps=200000):
@@ -77,4 +77,4 @@ if __name__ == "__main__":
     )
     print(expert_trajectories[:1])
     # 保存轨迹到文件
-    save_trajectories(save_trajectories)
+    save_trajectories(expert_trajectories)

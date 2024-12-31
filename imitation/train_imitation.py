@@ -53,8 +53,8 @@ def calculate_record(policy, agent, iteration):
     # distance = torch.nn.functional.kl_div(input_values,target_values)
 
     # record to TensorBoard and logger
-    writer.add_scalar(env_name + "/distance", distance, iteration)
-    writer.add_scalar(env_name + "/reward", reward, iteration)
+    writer.add_scalar(env_name + "Result/distance", distance, iteration)
+    writer.add_scalar(env_name + "Result/reward", reward, iteration)
 
     logger.record_tabular("iteration", iteration)
     logger.record_tabular("distance", distance)
@@ -228,21 +228,21 @@ if __name__ == "__main__":
     # torch.save(transitions,f"./imitation/imitation_expert/transitions_{env_name}.npy")
     # torch.save(rollouts,f"./imitation/imitation_expert/rollouts_{env_name}.npy")
 
-    transitions = torch.load(f"./imitation/imitation_expert/transitions_{env_name}.npy")
-    rollouts = torch.load(f"./imitation/imitation_expert/rollouts_{env_name}.npy")
+    transitions = torch.load(f"./imitation/expert_data/transitions_{env_name}.npy")
+    rollouts = torch.load(f"./imitation/expert_data/rollouts_{env_name}.npy")
+
+    transitions=transitions[:2048]
+    rollouts=rollouts[:2048]
+
     print("transitions",len(transitions))
     print("rollouts",len(rollouts))
     # PPO
     learner = PPO(
         env=env,
         policy=MlpPolicy,
-        batch_size=64,
-        ent_coef=0.0,
-        learning_rate=0.0004,
-        gamma=0.95,
+        learning_rate=0.0005,
+        gamma=0.99,
         n_epochs=5,
-        clip_range=0.1,
-        vf_coef=0.1,
         seed=seed,
         verbose=0,
         device='cpu'
