@@ -237,19 +237,19 @@ if __name__ == "__main__":
     writer = tb.SummaryWriter(log_folder + '/' + env_name + "_" + algorithm, flush_secs=1)
 
     #expert transitions
-    expert = train_expert()
+    #expert = train_expert()
     expert = PPO.load(f"./imitation/expert_data/{env_name}")
 
-    rollouts = rollout.rollout(
-        expert,
-        env,
-        rollout.make_sample_until(min_timesteps=16*128, min_episodes=16),
-        rng=rng,
-    )
-    transitions = rollout.flatten_trajectories(rollouts)
-
-    torch.save(transitions,f"./imitation/expert_data/transitions_{env_name}.npy")
-    torch.save(rollouts,f"./imitation/expert_data/rollouts_{env_name}.npy")
+    # rollouts = rollout.rollout(
+    #     expert,
+    #     env,
+    #     rollout.make_sample_until(min_timesteps=16*128, min_episodes=16),
+    #     rng=rng,
+    # )
+    # transitions = rollout.flatten_trajectories(rollouts)
+    #
+    # torch.save(transitions,f"./imitation/expert_data/transitions_{env_name}.npy")
+    # torch.save(rollouts,f"./imitation/expert_data/rollouts_{env_name}.npy")
 
     transitions = torch.load(f"./imitation/expert_data/transitions_{env_name}.npy")
     rollouts = torch.load(f"./imitation/expert_data/rollouts_{env_name}.npy")
