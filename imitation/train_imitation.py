@@ -141,7 +141,7 @@ def BC_train():
 
     print(f"Training with {algorithm}...")
     for iteration in range(n_itrs):
-        bc_trainer.train(n_epochs=1000)
+        bc_trainer.train(n_epochs=200)
         calculate_record(bc_trainer.policy, bc_trainer, iteration)
 
     return None
@@ -166,7 +166,7 @@ def Dagger_train():
                 expert_policy=expert,
                 bc_trainer=bc_trainer,
                 rng=rng)
-            dagger_trainer.train(1000)
+            dagger_trainer.train(200)
         calculate_record(dagger_trainer.policy, dagger_trainer, iteration)
 
     return None
