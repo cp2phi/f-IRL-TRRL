@@ -70,11 +70,11 @@ def GAIL_train():
     gail_trainer = GAIL(
         demonstrations=rollouts,
         demo_batch_size=64,
-        gen_replay_buffer_capacity=512,
-        n_disc_updates_per_round=10,
+        #gen_replay_buffer_capacity=512,
+        #n_disc_updates_per_round=10,
         venv=env,
         gen_algo=learner,
-        gen_train_timesteps=10000,
+        #gen_train_timesteps=10000,
         # init_tensorboard=True,
         reward_net=reward_net,
         allow_variable_horizon=True,
@@ -92,12 +92,12 @@ def AIRL_train():
     airl_trainer = AIRL(
         demonstrations=rollouts,
         demo_batch_size=64,
-        gen_replay_buffer_capacity=512,
-        n_disc_updates_per_round=10,
+        #gen_replay_buffer_capacity=512,
+        #n_disc_updates_per_round=10,
         venv=env,
         gen_algo=learner,
         reward_net=reward_net,
-        gen_train_timesteps=10000,
+        #gen_train_timesteps=10000,
         allow_variable_horizon=True,
     )
 
@@ -159,7 +159,7 @@ if __name__ == "__main__":
     # common parameters
     env_name = v['env']['env_name']
     state_indices = v['env']['state_indices']
-    seed = v['seed']
+    seed = 0
     num_expert_trajs = v['irl']['expert_episodes']
     n_itrs = v['irl']['n_itrs']
     algorithm = v['obj']
@@ -231,8 +231,8 @@ if __name__ == "__main__":
     transitions = torch.load(f"./imitation/expert_data/transitions_{env_name}.npy")
     rollouts = torch.load(f"./imitation/expert_data/rollouts_{env_name}.npy")
 
-    transitions=transitions[:2048]
-    rollouts=rollouts[:2048]
+    transitions=transitions[:1024]
+    rollouts=rollouts[:1024]
 
     print("transitions",len(transitions))
     print("rollouts",len(rollouts))
@@ -240,9 +240,11 @@ if __name__ == "__main__":
     learner = PPO(
         env=env,
         policy=MlpPolicy,
-        learning_rate=0.0005,
+        ent_coef = 0.01,
+        learning_rate=0.0001,
         gamma=0.99,
-        n_epochs=5,
+        n_epochs=20,
+        n_steps=128,
         seed=seed,
         verbose=0,
         device='cpu'
@@ -252,7 +254,7 @@ if __name__ == "__main__":
     reward_net = BasicRewardNet(
         observation_space=env.observation_space,
         action_space=env.action_space,
-        normalize_input_layer=RunningNorm,
+        #normalize_input_layer=RunningNorm,
     )
 
     # train
