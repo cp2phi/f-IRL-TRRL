@@ -30,6 +30,26 @@ from gym.wrappers import TimeLimit
 
 logging.basicConfig(level=logging.ERROR)
 
+
+def train_expert():
+    # note: use `download_expert` instead to download a pretrained, competent expert
+    print("Training an expert.")
+    expert = PPO(
+        policy=MlpPolicy,
+        env=env,
+        seed=0,
+        batch_size=64,
+        ent_coef=0.01,
+        learning_rate=0.0001,
+        gamma=0.99,
+        n_epochs=20,
+        n_steps=128
+    )
+    expert.learn(100_000)  # Note: change this to 100_000 to train a decent expert.
+    expert.save(f"./imitation/expert_data/{env_name}")
+    return expert
+
+
 def calculate_record(policy, agent, iteration):
     env.seed(seed)
     reward, _ = evaluate_policy(policy, env, 1)
@@ -157,12 +177,14 @@ if __name__ == "__main__":
     v = yaml.load(open(sys.argv[1]))
 
     # common parameters
-    env_name = v['env']['env_name']
+    #env_name = v['env']['env_name']
+    env_name = sys.argv[2]
     state_indices = v['env']['state_indices']
     seed = 0
     num_expert_trajs = v['irl']['expert_episodes']
-    n_itrs = v['irl']['n_itrs']
-    algorithm = v['obj']
+    n_itrs = 300
+    #algorithm = v['obj']
+    algorithm = sys.argv[3]
     rng = np.random.default_rng(seed)
 
     # system: device, threads, seed, pid
@@ -215,18 +237,19 @@ if __name__ == "__main__":
     writer = tb.SummaryWriter(log_folder + '/' + env_name + "_" + algorithm, flush_secs=1)
 
     #expert transitions
+    expert = train_expert()
     expert = PPO.load(f"./imitation/expert_data/{env_name}")
 
-    # rollouts = rollout.rollout(
-    #     expert,
-    #     env,
-    #     rollout.make_sample_until(min_timesteps=16*128, min_episodes=16),
-    #     rng=rng,
-    # )
-    # transitions = rollout.flatten_trajectories(rollouts)
-    #
-    # torch.save(transitions,f"./imitation/expert_data/transitions_{env_name}.npy")
-    # torch.save(rollouts,f"./imitation/expert_data/rollouts_{env_name}.npy")
+    rollouts = rollout.rollout(
+        expert,
+        env,
+        rollout.make_sample_until(min_timesteps=16*128, min_episodes=16),
+        rng=rng,
+    )
+    transitions = rollout.flatten_trajectories(rollouts)
+
+    torch.save(transitions,f"./imitation/expert_data/transitions_{env_name}.npy")
+    torch.save(rollouts,f"./imitation/expert_data/rollouts_{env_name}.npy")
 
     transitions = torch.load(f"./imitation/expert_data/transitions_{env_name}.npy")
     rollouts = torch.load(f"./imitation/expert_data/rollouts_{env_name}.npy")
